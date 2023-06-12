@@ -1,13 +1,18 @@
-import { ethers } from "ethers";
+import { Interface, InterfaceAbi, ethers } from "ethers";
 import fs from "fs-extra";
+import * as dotenv from "dotenv";
 
 async function main() {
-  //http://127.0.0.1:7545
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:7545");
-  const wallet = new ethers.Wallet(
-    "0x962355e5534cf73d354b2792432a511f6f70eac52b1d30a085acf9ede3ba5d6a",
-    provider
+  dotenv.config();
+
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  // const wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "", provider);
+  const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf8");
+  let wallet = ethers.Wallet.fromEncryptedJsonSync(
+    encryptedJson,
+    process.env.PRIVATE_KEY_PASSWORD as string
   );
+  wallet = await wallet.connect(provider);
   const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf8");
   const binary = fs.readFileSync(
     "./SimpleStorage_sol_SimpleStorage.bin",
@@ -16,9 +21,11 @@ async function main() {
   const contractFactory = new ethers.ContractFactory(abi, binary, wallet);
   console.log("Deploying, please wait...");
   const contract = await contractFactory.deploy();
+  // await contract.waitForDeployment();
   console.log(contract);
-  const transactionReceipt = await contract.deploymentTransaction();
-  console.log(transactionReceipt);
+  const transactionReceipt = await contract.deploymentTransaction()?.wait(1);
+
+  // console.log(transactionReceipt);
   // const nounce = await wallet.getNonce();
   // const tx = {
   //   nonce: nounce,

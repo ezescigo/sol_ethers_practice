@@ -4,6 +4,7 @@
     "compile": "yarn solcjs --bin --abi --include-path node_modules/ --base-path . -o . SimpleStorage.sol"
   },
   "dependencies": {
+    "dotenv": "^16.1.4",
     "ethers": "^6.5.1",
     "solc": "0.8.7-fixed"
   },
