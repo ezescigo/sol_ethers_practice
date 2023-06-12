@@ -5,7 +5,7 @@ async function main() {
   //http://127.0.0.1:7545
   const provider = new ethers.JsonRpcProvider("http://127.0.0.1:7545");
   const wallet = new ethers.Wallet(
-    "0x8c9398a44341a74b35c46d8d08d00f35708a89d937e1813a73007ce2bf639666",
+    "0x962355e5534cf73d354b2792432a511f6f70eac52b1d30a085acf9ede3ba5d6a",
     provider
   );
   const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf8");
@@ -17,7 +17,8 @@ async function main() {
   console.log("Deploying, please wait...");
   const contract = await contractFactory.deploy();
   console.log(contract);
-
+  const transactionReceipt = await contract.deploymentTransaction();
+  console.log(transactionReceipt);
   // const nounce = await wallet.getNonce();
   // const tx = {
   //   nonce: nounce,
@@ -30,6 +31,8 @@ async function main() {
   // };
   // const sentTx = await wallet.sendTransaction(tx);
   // console.log(sentTx);
+
+  // const currentFavoriteNumber = await contract.retrieve();
 }
 
 main()
