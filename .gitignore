@@ -1,3 +1,10 @@
 /node_modules/
 .env
 .encryptedKey.json
+coverage
+covergage.json
+typechain
+
+#Hardhat files
+cache
+artifacts

@@ -3,7 +3,7 @@ import * as fs from "fs-extra"
 import "dotenv/config"
 
 async function main() {
-    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL)
+    const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL)
     // const wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "", provider);
     const encryptedJson = await fs.readFile("./.encryptedKey.json", "utf8")
     let wallet = ethers.Wallet.fromEncryptedJsonSync(
